@@ -8,7 +8,7 @@
 import UIKit
 
 class SavedViewController: UIViewController {
-
+    
     //MARK: Outlets
     var savedNews : [NewsInfo] = [NewsInfo]()
     private let collectionView : UICollectionView = {
@@ -22,14 +22,12 @@ class SavedViewController: UIViewController {
         return collectionView
         
     }()
-   
     
+    //MARK: Start func
     override func viewDidLoad() {
         super.viewDidLoad()
-    
-       navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .done, target: self, action: #selector(didTapedDeleteAllButton))
+        
         title = "Saved"
-      //  navigationController?.navigationBar.prefersLargeTitles = true
         view.backgroundColor = .white
         view.addSubview(collectionView)
         collectionView.delegate = self
@@ -37,7 +35,18 @@ class SavedViewController: UIViewController {
         getData()
         confirmNotificationCenter()
     }
+    //MARK: will Start func
+    override func viewWillAppear(_ animated: Bool) {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .done, target: self, action: #selector(didTapedDeleteAllButton))
+        navigationController?.navigationBar.tintColor = .red
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        collectionView.frame = view.bounds
+    }
+    //MARK: Action
     private func confirmNotificationCenter(){
         
         NotificationCenter.default.addObserver(forName: NSNotification.Name("didTabedUNsavedButton"), object: nil, queue: .none) { _ in
@@ -49,11 +58,11 @@ class SavedViewController: UIViewController {
         NotificationCenter.default.addObserver(forName: NSNotification.Name("didTapedSavedButtonTodataBase"), object: nil, queue: .none) { _ in
             self.getData()
         }
-
+        
     }
     
     @objc func didTapedDeleteAllButton(){
-    
+        
         if savedNews.count == 0{
             print("Breaked")
         }
@@ -71,13 +80,8 @@ class SavedViewController: UIViewController {
             NotificationCenter.default.post(name: NSNotification.Name("didTabedUNsavedAllButton"), object:nil)
         }
     }
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        collectionView.frame = view.bounds
-    }
     
-    
-    func getData(){
+    private func getData(){
         
         DataPersistenceManger.getSavedNews { [weak self] result in
             switch result{
@@ -91,9 +95,11 @@ class SavedViewController: UIViewController {
             }
         }
     }
-
+    
 }
-extension SavedViewController : UICollectionViewDelegate, UICollectionViewDataSource , UICollectionViewDelegateFlowLayout{
+    //MARK: confirm collection view function
+extension SavedViewController : UICollectionViewDelegate, UICollectionViewDataSource{
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return savedNews.count
     }
@@ -106,23 +112,22 @@ extension SavedViewController : UICollectionViewDelegate, UICollectionViewDataSo
         cell.configure(with: ResultModel)
         return cell
     }
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let model = savedNews[indexPath.row]
-      let vc = DetailsViewController()
+        let vc = DetailsViewController()
         let detailsModel = Results(title: model.title, link: model.link, creator: nil, description: model.desc, pubDate: model.pubDate, image_url: model.image_url, source_icon: model.source_icon)
         vc.detailsModel = detailsModel
         vc.deleteNews = model
         vc.fromSavedViewController = true
         navigationController?.pushViewController(vc, animated: true)
     }
+}
+
+extension SavedViewController : UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width
         let height = collectionView.frame.height
         return CGSize(width: width - 10 , height: height * 0.12)
     }
-    
-    
-    
 }

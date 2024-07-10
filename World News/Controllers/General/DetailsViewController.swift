@@ -10,6 +10,7 @@ import SDWebImage
 import SafariServices
 class DetailsViewController: UIViewController {
     
+    // MARK: OUTLETS
     var exist : Bool = false
     var savedNews = [String]()
     var fromSavedViewController : Bool = false
@@ -17,7 +18,6 @@ class DetailsViewController: UIViewController {
     var deleteNews = NewsInfo()
    
     private let scrollView : UIScrollView = {
-        
         let scroll = UIScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
         return scroll
@@ -25,12 +25,12 @@ class DetailsViewController: UIViewController {
     }()
     
     private let contentView : UIView = {
-        
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
         
     }()
+    
     private let titleLabel : UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 18, weight: .bold)
@@ -94,8 +94,8 @@ class DetailsViewController: UIViewController {
         return label
         
     }()
-    
-    
+    // MARK: Start func
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -130,7 +130,8 @@ class DetailsViewController: UIViewController {
         applyConstrains()
     
     }
- 
+    // MARK: Action
+
     @objc func didTapedUnSavedButton(){
         
         DataPersistenceManger.deleteNews(model: deleteNews) { result in
@@ -145,7 +146,7 @@ class DetailsViewController: UIViewController {
             }
         }
     }
-    func getData(){
+   private func getData(){
 
         DataPersistenceManger.getSavedNews { [self] result in
             switch result{
@@ -162,10 +163,6 @@ class DetailsViewController: UIViewController {
     }
 
     @objc func didTapedSavedButton(){
-        
-        
-        
-        
         guard let detailsModel = detailsModel else {
             return
         }
@@ -221,9 +218,7 @@ class DetailsViewController: UIViewController {
     
     
     private func applyConstrains(){
-        
 //        let guardArea = view.safeAreaLayoutGuide
-        
         let scrollConstrains = [
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -238,35 +233,26 @@ class DetailsViewController: UIViewController {
         ]
         let posterImageConstrains = [
             posterImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            posterImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -8),
-            posterImage.heightAnchor.constraint(equalToConstant: 200),
+            posterImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: 0),
+            posterImage.heightAnchor.constraint(equalToConstant: 300),
             posterImage.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 4)
-            
         ]
-
         let titleLabelConstrains = [
             titleLabel.topAnchor.constraint(equalTo: posterImage.bottomAnchor,constant: 8),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: 8),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor ,constant: -8)
         ]
-        
         let sourceImageConstrains = [
-        
             sourceImage.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             sourceImage.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,constant: 24),
             sourceImage.widthAnchor.constraint(equalToConstant: 40),
             sourceImage.heightAnchor.constraint(equalToConstant: 40),
-
-
         ]
-        
         let creatorlabelConstrains = [
-            
             creatorLabel.centerYAnchor.constraint(equalTo: sourceImage.centerYAnchor),
           //  creatorLabel.topAnchor.constraint(equalTo: sourceImage.topAnchor,constant: 12),
              creatorLabel.leadingAnchor.constraint(equalTo: sourceImage.trailingAnchor,constant: 8),
             creatorLabel.trailingAnchor.constraint(equalTo: contentView.centerXAnchor)
-            
         ]
         let pubDatelabelConstrains = [
             pubDateLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor,constant: -4),
@@ -286,8 +272,6 @@ class DetailsViewController: UIViewController {
         NSLayoutConstraint.activate(creatorlabelConstrains)
         NSLayoutConstraint.activate(pubDatelabelConstrains)
         NSLayoutConstraint.activate(descreptionConstrains)
-        
-        
     }
 
 }

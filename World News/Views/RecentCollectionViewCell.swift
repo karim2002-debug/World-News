@@ -14,7 +14,7 @@ class RecentCollectionViewCell: UICollectionViewCell {
        
        let view = UIView()
        view.translatesAutoresizingMaskIntoConstraints = false
-       view.backgroundColor = .black
+       view.backgroundColor = .label
        view.layer.cornerRadius = 20
        return view
    }()
@@ -24,7 +24,7 @@ class RecentCollectionViewCell: UICollectionViewCell {
        label.translatesAutoresizingMaskIntoConstraints = false
        label.numberOfLines = 2
        label.font = .systemFont(ofSize: 14, weight: .bold)
-       label.textColor = UIColor.white
+        label.textColor = .systemBackground
        return label
        
    }()
@@ -32,7 +32,7 @@ class RecentCollectionViewCell: UICollectionViewCell {
        let label = UILabel()
        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 12, weight: .light)
-       label.textColor = UIColor.white
+        label.textColor = .label
        return label
        
    }()

@@ -9,7 +9,7 @@ import UIKit
 import SafariServices
 class SearchViewController: UIViewController{
     
-    
+    // MARK: Outlets
     var news = [Results]()
     
     private let searchController : UISearchController = {
@@ -20,7 +20,6 @@ class SearchViewController: UIViewController{
         return searchController
         
     }()
-
     
     private let collectionView : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -34,8 +33,7 @@ class SearchViewController: UIViewController{
         
     }()
     
-    
-    
+    // MARK: Start func
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(collectionView)
@@ -50,24 +48,26 @@ class SearchViewController: UIViewController{
         
     }
     
-    func getNews(){
-        APICaller.getsearchNews { result in
-            switch result {
-            case .success(let success):
-                self.news = success
-                self.collectionView.reloadData()
-            case .failure(let failure):
-                print(failure)
-            }
-        }
-    }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         collectionView.frame = view.bounds
     }
     
+    // MARK: Actions
+    private func getNews(){
+        APICaller.getsearchNews {[weak self] result in
+            switch result {
+            case .success(let success):
+                self?.news = success
+                self?.collectionView.reloadData()
+            case .failure(let failure):
+                print(failure)
+            }
+        }
+    }
 }
-extension SearchViewController : UICollectionViewDelegate, UICollectionViewDataSource , UICollectionViewDelegateFlowLayout{
+    // MARK: confirm collection view func
+extension SearchViewController : UICollectionViewDelegate, UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return news.count
     }
@@ -87,30 +87,27 @@ extension SearchViewController : UICollectionViewDelegate, UICollectionViewDataS
         navigationController?.pushViewController(vc, animated: true)
     }
     
+}
+
+extension SearchViewController : UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width
         let height = collectionView.frame.height
         return CGSize(width: width - 10 , height: height * 0.12)
     }
-    
-    
-    
 }
+  // MARK: confirm search func
 extension SearchViewController : UISearchResultsUpdating , SearchResultviewControllerDelgete{
- 
-    
     func updateSearchResults(for searchController: UISearchController) {
-        
         let searchBar = searchController.searchBar
-        
         // check that query not empty and its count >= 3
         guard let query = searchBar.text ,
               !query.trimmingCharacters(in: .whitespaces).isEmpty,
               query.trimmingCharacters(in: .whitespaces).count >= 3 ,
-            let resultController = searchController.searchResultsController as? SearchResultViewController else{
-                return
-            } 
-         resultController.delegete = self
+              let resultController = searchController.searchResultsController as? SearchResultViewController else{
+            return
+        }
+        resultController.delegete = self
         
         APICaller.searchForNews(query: query) { result in
             DispatchQueue.main.async {
@@ -124,8 +121,6 @@ extension SearchViewController : UISearchResultsUpdating , SearchResultviewContr
                 }
             }
         }
-
-        
     }
     func SearchResultViewControllerDidTaped(_ model: Results) {
         DispatchQueue.main.async { [weak self] in

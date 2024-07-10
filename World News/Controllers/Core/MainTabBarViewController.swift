@@ -23,9 +23,9 @@ class MainTabBarViewController: UITabBarController {
         vc2.tabBarItem.image = UIImage(systemName: "magnifyingglass")
         vc3.tabBarItem.image = UIImage(systemName: "bookmark")
 
-        tabBar.tintColor = .gray
-        tabBar.unselectedItemTintColor = .black
-        tabBar.barTintColor = .gray
+         tabBar.tintColor = .black
+        tabBar.unselectedItemTintColor = .gray
+        tabBar.barTintColor = .black
         tabBar.backgroundColor = .white
         setViewControllers([vc1,vc2,vc3], animated: true)
         

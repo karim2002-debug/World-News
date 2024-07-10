@@ -10,40 +10,33 @@ import SDWebImage
 class NewsCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "NewsCollectionViewCell"
-    
-   
-    
      var titleLabel : UILabel = {
         
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 2
         label.font = .systemFont(ofSize: 17, weight: .bold)
-        label.textColor = UIColor.white
+         label.textColor = .systemBackground
         return label
-        
     }()
      let view : UIView = {
-        
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .black
+        view.backgroundColor = .label
         view.alpha = 0.8
          view.layer.cornerRadius = 0
         return view
     }()
      var posterImageView : UIImageView = {
-        
+
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.layer.cornerRadius = 25
         image.translatesAutoresizingMaskIntoConstraints = false
         image.layer.masksToBounds = true
-
         return image
     
     }()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(posterImageView)
@@ -53,7 +46,6 @@ class NewsCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
-    
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -69,28 +61,18 @@ class NewsCollectionViewCell: UICollectionViewCell {
         posterImageView.sd_setImage(with: url)
     }
     private func applycontrains(){
-    
-    
-   
         let posterImageViewConstrains = [
             
             posterImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             posterImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -2),
             posterImageView.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 0),
             posterImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            
         ]
-       
-        
         let viewConstrains = [
-            
-            
             view.leadingAnchor.constraint(equalTo: posterImageView.leadingAnchor),
             view.trailingAnchor.constraint(equalTo: posterImageView.trailingAnchor),
             view.bottomAnchor.constraint(equalTo: posterImageView.bottomAnchor),
             view.topAnchor.constraint(equalTo: posterImageView.centerYAnchor , constant: 12)
-            
-            
         ]
         let titleLabelContrains = [
             
@@ -99,11 +81,9 @@ class NewsCollectionViewCell: UICollectionViewCell {
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor ,constant: -8),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor ,constant: 20),
             // titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor , constant: 4)
-            
         ]
         NSLayoutConstraint.activate(posterImageViewConstrains)
         NSLayoutConstraint.activate(viewConstrains)
-        NSLayoutConstraint.activate(titleLabelContrains)
-        
+        NSLayoutConstraint.activate(titleLabelContrains)        
     }
 }

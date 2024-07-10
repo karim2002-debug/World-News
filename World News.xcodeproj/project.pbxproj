@@ -21,7 +21,6 @@
 		FA3429672C396B200016CEA0 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3429662C396B200016CEA0 /* DetailsViewController.swift */; };
 		FA3429692C396B290016CEA0 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3429682C396B290016CEA0 /* Model.swift */; };
 		FA34296B2C396B440016CEA0 /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA34296A2C396B440016CEA0 /* APICaller.swift */; };
-		FA34296D2C396C060016CEA0 /* NewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA34296C2C396C060016CEA0 /* NewsTableViewCell.swift */; };
 		FA3429742C3971BC0016CEA0 /* NewsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3429732C3971BC0016CEA0 /* NewsCollectionViewCell.swift */; };
 		FA3429762C39BD000016CEA0 /* RecentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3429752C39BD000016CEA0 /* RecentCollectionViewCell.swift */; };
 		FA3429782C3AD66B0016CEA0 /* DetailsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3429772C3AD66B0016CEA0 /* DetailsModel.swift */; };
@@ -47,7 +46,6 @@
 		FA3429662C396B200016CEA0 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		FA3429682C396B290016CEA0 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		FA34296A2C396B440016CEA0 /* APICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICaller.swift; sourceTree = "<group>"; };
-		FA34296C2C396C060016CEA0 /* NewsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewCell.swift; sourceTree = "<group>"; };
 		FA3429732C3971BC0016CEA0 /* NewsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCollectionViewCell.swift; sourceTree = "<group>"; };
 		FA3429752C39BD000016CEA0 /* RecentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentCollectionViewCell.swift; sourceTree = "<group>"; };
 		FA3429772C3AD66B0016CEA0 /* DetailsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsModel.swift; sourceTree = "<group>"; };
@@ -81,6 +79,26 @@
 				266F9E8D8C1C5E19FCC06E82 /* Pods_World_News.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FA272A132C3EB17E0048B471 /* General */ = {
+			isa = PBXGroup;
+			children = (
+				FA272A112C3D4F9B0048B471 /* SearchResultViewController.swift */,
+				FA3429662C396B200016CEA0 /* DetailsViewController.swift */,
+			);
+			path = General;
+			sourceTree = "<group>";
+		};
+		FA272A142C3EB1950048B471 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				FA34295E2C396A5B0016CEA0 /* MainTabBarViewController.swift */,
+				FA3429602C396A8F0016CEA0 /* SearchViewController.swift */,
+				FA3429622C396AA30016CEA0 /* HomeViewController.swift */,
+				FA3429642C396AAE0016CEA0 /* SavedViewController.swift */,
+			);
+			path = Core;
 			sourceTree = "<group>";
 		};
 		FA3429392C3969410016CEA0 = {
@@ -126,7 +144,6 @@
 		FA34296F2C396D1C0016CEA0 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				FA34296C2C396C060016CEA0 /* NewsTableViewCell.swift */,
 				FA3429732C3971BC0016CEA0 /* NewsCollectionViewCell.swift */,
 				FA3429752C39BD000016CEA0 /* RecentCollectionViewCell.swift */,
 			);
@@ -136,12 +153,8 @@
 		FA3429702C396D280016CEA0 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				FA34295E2C396A5B0016CEA0 /* MainTabBarViewController.swift */,
-				FA3429602C396A8F0016CEA0 /* SearchViewController.swift */,
-				FA3429622C396AA30016CEA0 /* HomeViewController.swift */,
-				FA3429642C396AAE0016CEA0 /* SavedViewController.swift */,
-				FA3429662C396B200016CEA0 /* DetailsViewController.swift */,
-				FA272A112C3D4F9B0048B471 /* SearchResultViewController.swift */,
+				FA272A142C3EB1950048B471 /* Core */,
+				FA272A132C3EB17E0048B471 /* General */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -282,7 +295,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA3429692C396B290016CEA0 /* Model.swift in Sources */,
-				FA34296D2C396C060016CEA0 /* NewsTableViewCell.swift in Sources */,
 				FA3429762C39BD000016CEA0 /* RecentCollectionViewCell.swift in Sources */,
 				FA34295F2C396A5B0016CEA0 /* MainTabBarViewController.swift in Sources */,
 				FA34297A2C3ADFA20016CEA0 /* DatePeristenceManger.swift in Sources */,

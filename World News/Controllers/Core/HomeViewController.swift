@@ -9,43 +9,38 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
+    //MARK: outlets
     var breakingNews = [Results]()
     var recentNews = [Results]()
     private let headerBreakingLabel : UILabel = {
-        
         let label = UILabel()
         label.text = "Breaking News"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.textColor = .label
         return label
-        
     }()
+    
     private let headerRecentLabel : UILabel = {
-        
         let label = UILabel()
         label.text = "Recent News"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 20, weight: .bold)
         return label
-        
     }()
+    
     private let breakingCollectionView : UICollectionView = {
-        
-        
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: 100, height: 100)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(NewsCollectionViewCell.self, forCellWithReuseIdentifier: NewsCollectionViewCell.identifier)
-        // collectionView.isScrollEnabled = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.layer.masksToBounds = true
-        
         return collectionView
         
         
     }()
-    
     private let recentCollectionView : UICollectionView = {
         
         let layout = UICollectionViewFlowLayout()
@@ -58,13 +53,13 @@ class HomeViewController: UIViewController {
         return collectionView
         
     }()
-    
-    
+    //MARK: Start func
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(breakingCollectionView)
         view.addSubview(recentCollectionView)
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         view.addSubview(headerBreakingLabel)
         view.addSubview(headerRecentLabel)
         title = "World News"
@@ -76,6 +71,7 @@ class HomeViewController: UIViewController {
         recentCollectionView.dataSource = self
         applyConstrains()
     }
+    //MARK: Actions
     private func getdate(){
         APICaller.getBreakingNews { result in
             switch result{
@@ -101,7 +97,8 @@ class HomeViewController: UIViewController {
             }
         }
     }
-   private func applyConstrains(){
+    
+    private func applyConstrains(){
         let height = view.frame.height
         let margins = view.layoutMarginsGuide
         
@@ -123,13 +120,13 @@ class HomeViewController: UIViewController {
         ]
         
         let recentCollectionViewConstrains = [
-        
+            
             recentCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 8),
             recentCollectionView.topAnchor.constraint(equalTo: headerRecentLabel.bottomAnchor,constant: 20),
             recentCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -8),
             recentCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-
-        
+            
+            
         ]
         NSLayoutConstraint.activate(recentCollectionViewConstrains)
         NSLayoutConstraint.activate(headerRecentLabelConstrains)
@@ -139,7 +136,9 @@ class HomeViewController: UIViewController {
     
     
 }
-extension HomeViewController : UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout{
+     //MARK: confirm collectionView func
+
+extension HomeViewController : UICollectionViewDelegate , UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         switch collectionView{
@@ -168,14 +167,39 @@ extension HomeViewController : UICollectionViewDelegate , UICollectionViewDataSo
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecentCollectionViewCell.identifer, for: indexPath)as? RecentCollectionViewCell else{
                 return UICollectionViewCell()
             }
-            
             cell.configure(with: recentNews[indexPath.row])
-                    return cell
+            return cell
             
         default:
             return UICollectionViewCell()
         }
     }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let vc = DetailsViewController()
+        switch collectionView{
+            
+        case breakingCollectionView:
+            let model =  breakingNews[indexPath.row]
+            let savedModel = DetailsModel(title: model.title, link: model.link, creator: model.creator, description: model.description, pubDate: model.pubDate, image_url: model.image_url, source_icon: model.source_icon)
+            vc.detailsModel = model
+            navigationController?.pushViewController(vc, animated: true)
+            case recentCollectionView :
+            let model = recentNews[indexPath.row]
+            print(model)
+            
+            let savedModel = DetailsModel(title: model.title, link: model.link, creator: model.creator, description: model.description, pubDate: model.pubDate, image_url: model.image_url, source_icon: model.source_icon)
+            vc.detailsModel = model
+            navigationController?.pushViewController(vc, animated: true)
+        default:
+            print("error")
+        }
+    }
+    
+}
+extension HomeViewController : UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.frame.width
@@ -188,7 +212,6 @@ extension HomeViewController : UICollectionViewDelegate , UICollectionViewDataSo
         default:
             return CGSize()
         }
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -201,45 +224,4 @@ extension HomeViewController : UICollectionViewDelegate , UICollectionViewDataSo
             return CGFloat()
         }
     }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-      
-        let vc = DetailsViewController()
-        switch collectionView{
-            
-        case breakingCollectionView:
-            let model =  breakingNews[indexPath.row]
-            let savedModel = DetailsModel(title: model.title, link: model.link, creator: model.creator, description: model.description, pubDate: model.pubDate, image_url: model.image_url, source_icon: model.source_icon)
-        //    vc.savedNew = savedModel
-            vc.detailsModel = model
-           // vc.configer(with: detailsModel)
-         //   vc.newsDetails = breakingNews[indexPath.row]
-            navigationController?.pushViewController(vc, animated: true)
-            
-            //code
-        case recentCollectionView :
-            let model = recentNews[indexPath.row]
-            print(model)
-
-            let savedModel = DetailsModel(title: model.title, link: model.link, creator: model.creator, description: model.description, pubDate: model.pubDate, image_url: model.image_url, source_icon: model.source_icon)
-         //   vc.savedNew = savedModel
-            vc.detailsModel = model
-    
-//            let detailsModel = DetailsModel(title: model.title, link: model.link, creator: nil, description: nil, pubDate: model.pubDate, image_url: model.image_url, source_icon: model.source_icon)
-         //   vc.detailsModel = model
-         //   vc.configer(with: detailsModel)
-        //   vc.configer(with: model)
-          //  vc.newsDetails = breakingNews[indexPath.row]
-
-            navigationController?.pushViewController(vc, animated: true)
-            // code
-            
-            
-            
-        default:
-            print("error")
-        }
-    }
-    
 }
