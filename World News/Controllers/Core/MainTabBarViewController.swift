@@ -23,7 +23,9 @@ class MainTabBarViewController: UITabBarController {
         vc2.tabBarItem.image = UIImage(systemName: "magnifyingglass")
         vc3.tabBarItem.image = UIImage(systemName: "bookmark")
 
-         tabBar.tintColor = .black
+        vc1.tabBarItem.selectedImage = UIImage(systemName: "house.fill")
+        vc3.tabBarItem.selectedImage = UIImage(systemName: "bookmark.fill")
+        tabBar.tintColor = .black
         tabBar.unselectedItemTintColor = .gray
         tabBar.barTintColor = .black
         tabBar.backgroundColor = .white

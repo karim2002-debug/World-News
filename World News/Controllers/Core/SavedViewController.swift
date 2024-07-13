@@ -26,7 +26,6 @@ class SavedViewController: UIViewController {
     //MARK: Start func
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         title = "Saved"
         view.backgroundColor = .white
         view.addSubview(collectionView)
@@ -62,23 +61,11 @@ class SavedViewController: UIViewController {
     }
     
     @objc func didTapedDeleteAllButton(){
-        
-        if savedNews.count == 0{
-            print("Breaked")
-        }
-        else{
-            for i in 0...savedNews.count - 1{
-                DataPersistenceManger.deleteNews(model: savedNews[i]) { result in
-                    switch result {
-                    case .success():
-                        print("done")
-                    case .failure(let failure):
-                        print(print(failure))
-                    }
-                }
-            }
-            NotificationCenter.default.post(name: NSNotification.Name("didTabedUNsavedAllButton"), object:nil)
-        }
+        let alert = AlertViewController()
+        alert.showAlert(message: "Are you sure about deleting all", titleName: nil, image: UIImage(named: "alert"), isDestractive: true)
+        alert.delegete = self
+        alert.modalPresentationStyle = .overFullScreen
+        present(alert, animated: true)
     }
     
     private func getData(){
@@ -97,7 +84,7 @@ class SavedViewController: UIViewController {
     }
     
 }
-    //MARK: confirm collection view function
+//MARK: confirm collection view function
 extension SavedViewController : UICollectionViewDelegate, UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -130,4 +117,35 @@ extension SavedViewController : UICollectionViewDelegateFlowLayout{
         let height = collectionView.frame.height
         return CGSize(width: width - 10 , height: height * 0.12)
     }
+}
+
+
+
+extension SavedViewController : didTapedAlertButtonsDelegete{
+    
+    func didTapedNormalButton() {
+        dismiss(animated: true)
+    }
+    
+    func didTapedDestractiveButton() {
+        if savedNews.count == 0{
+            print("Breaked")
+        }
+        else{
+            for i in 0...savedNews.count - 1{
+                DataPersistenceManger.deleteNews(model: savedNews[i]) { result in
+                    switch result {
+                    case .success():
+                        print("done")
+                    case .failure(let failure):
+                        print(print(failure))
+                    }
+                }
+            }
+            NotificationCenter.default.post(name: NSNotification.Name("didTabedUNsavedAllButton"), object:nil)
+        }
+        dismiss(animated: true)
+    }
+    
+    
 }

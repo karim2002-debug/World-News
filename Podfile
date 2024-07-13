@@ -8,5 +8,6 @@ target 'World News' do
   # Pods for World News
 pod 'Alamofire'
 pod 'SDWebImage'
+pod 'NVActivityIndicatorView'
 
 end

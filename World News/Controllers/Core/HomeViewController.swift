@@ -6,12 +6,14 @@
 //
 
 import UIKit
-
+import NVActivityIndicatorView
 class HomeViewController: UIViewController {
     
     //MARK: outlets
+    
     var breakingNews = [Results]()
     var recentNews = [Results]()
+    let indicator = Indicator.shared.indicator
     private let headerBreakingLabel : UILabel = {
         let label = UILabel()
         label.text = "Breaking News"
@@ -62,24 +64,29 @@ class HomeViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(headerBreakingLabel)
         view.addSubview(headerRecentLabel)
+        view.addSubview(indicator)
         title = "World News"
         navigationController?.navigationBar.prefersLargeTitles = true
-        getdate()
         breakingCollectionView.delegate = self
         breakingCollectionView.dataSource = self
         recentCollectionView.delegate = self
         recentCollectionView.dataSource = self
+        getdate()
         applyConstrains()
-    }
+     }
+    
     //MARK: Actions
     private func getdate(){
-        APICaller.getBreakingNews { result in
+        indicator.startAnimating()
+        view.alpha = 0.8
+        APICaller.getBreakingNews {[weak self] result in
             switch result{
             case .success(let News):
                 print(News)
-                self.breakingNews = News
-                print(self.breakingNews)
-                self.breakingCollectionView.reloadData()
+                self?.breakingNews = News
+                self?.breakingCollectionView.reloadData()
+                self?.indicator.stopAnimating()
+                self?.view.alpha = 1
             case .failure(let error):
                 print(error)
             }
@@ -88,7 +95,7 @@ class HomeViewController: UIViewController {
         APICaller.getNews { result in
             switch result{
             case .success(let News):
-                print(News)
+                
                 self.recentNews = News
                 print(self.recentNews)
                 self.recentCollectionView.reloadData()
@@ -125,9 +132,13 @@ class HomeViewController: UIViewController {
             recentCollectionView.topAnchor.constraint(equalTo: headerRecentLabel.bottomAnchor,constant: 20),
             recentCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -8),
             recentCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
-            
         ]
+        let indicatorConstrains = [
+            indicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            indicator.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+
+        ]
+        NSLayoutConstraint.activate(indicatorConstrains)
         NSLayoutConstraint.activate(recentCollectionViewConstrains)
         NSLayoutConstraint.activate(headerRecentLabelConstrains)
         NSLayoutConstraint.activate(headerBreakingLabelConstrains)

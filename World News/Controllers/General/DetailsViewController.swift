@@ -8,7 +8,7 @@
 import UIKit
 import SDWebImage
 import SafariServices
-class DetailsViewController: UIViewController {
+class DetailsViewController: UIViewController{
     
     // MARK: OUTLETS
     var exist : Bool = false
@@ -184,6 +184,11 @@ class DetailsViewController: UIViewController {
     }
     
     func saveNew(){
+        let alert = AlertViewController()
+        alert.delegete = self
+        alert.modalPresentationStyle = .overFullScreen
+        alert.showAlert(message: "This news saved successfully", titleName: nil, image: UIImage(named: "right"), isDestractive: false)
+        present(alert, animated: true)
         DataPersistenceManger.saveNew(model: detailsModel) { [self] result in
             switch result{
             case .success():
@@ -275,3 +280,12 @@ class DetailsViewController: UIViewController {
     }
 
 }
+
+
+extension DetailsViewController : didTapedAlertButtonsDelegete {
+    
+    func didTapedNormalButton() {
+        dismiss(animated: true)
+    }
+}
+    

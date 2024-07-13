@@ -7,11 +7,12 @@
 
 import UIKit
 import SafariServices
+import NVActivityIndicatorView
 class SearchViewController: UIViewController{
     
     // MARK: Outlets
     var news = [Results]()
-    
+    let indector = Indicator.shared.indicator
     private let searchController : UISearchController = {
         let searchController = UISearchController(searchResultsController: SearchResultViewController())
         searchController.searchBar.placeholder = "Search for news"
@@ -37,6 +38,7 @@ class SearchViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(collectionView)
+        view.addSubview(indector)
         collectionView.delegate = self
         collectionView.dataSource = self
         view.backgroundColor = .systemBackground
@@ -45,21 +47,32 @@ class SearchViewController: UIViewController{
         navigationItem.searchController = searchController
         searchController.searchResultsUpdater = self
         getNews()
-        
+        ApplyIndicatorConstrains()
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         collectionView.frame = view.bounds
     }
     
     // MARK: Actions
+   private func ApplyIndicatorConstrains(){
+            let indicatorConstrain = [
+            indector.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+            indector.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
+        ]
+        NSLayoutConstraint.activate(indicatorConstrain)
+    }
     private func getNews(){
+        indector.startAnimating()
+        view.alpha = 0.8
         APICaller.getsearchNews {[weak self] result in
             switch result {
             case .success(let success):
                 self?.news = success
                 self?.collectionView.reloadData()
+                self?.indector.stopAnimating()
+                self?.view.alpha = 1
             case .failure(let failure):
                 print(failure)
             }
